@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>移动端网页模板</title>
+  <link rel="stylesheet" href="./lib/style.css">
+  <link rel="stylesheet" href="./lib/swiper-bundle.min.css">
+</head>
+
+<body id="app">
+  <header>
+    <h1>移动网页标题</h1>
+    <div class="swiper mySwiper">
+      <!-- Swiper -->
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">Slide 1</div>
+        <div class="swiper-slide">Slide 2</div>
+        <div class="swiper-slide">Slide 3</div>
+        <div class="swiper-slide">Slide 4</div>
+        <div class="swiper-slide">Slide 5</div>
+        <div class="swiper-slide">Slide 6</div>
+        <div class="swiper-slide">Slide 7</div>
+        <div class="swiper-slide">Slide 8</div>
+        <div class="swiper-slide">Slide 9</div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </header>
+  <main class="container">
+    这是一个使用 VW 适配的容器。{{ message }}
+    <section class="flex">
+      <ul>
+        <li v-for="item in list" @click="handle(item)">
+          {{ item }}
+        </li>
+      </ul>
+    </section>
+
+    <List-Component :list="list" />
+
+    <section v-if="list1.length" class="flex">
+      <ul>
+        <li class="flex" v-for="item in list1">
+          {{ item }}
+        </li>
+      </ul>
+    </section>
+  </main>
+  <footer>
+    <p>版权信息 &copy; 2024</p>
+  </footer>
+
+
+  <!-- Swiper JS -->
+  <script src="./lib/swiper-bundle.min.js"></script>
+  <script type="module">
+    import { createApp, ref, onMounted } from './lib/vue.global.prod.js'
+    import ListComponent from './cmponent/list.js'
+
+    createApp({
+      setup() {
+        const message = ref('Hello vue!')
+        const list = ref([1, 2, 3])
+        const list1 = ref([])
+        const handle = (p) => {
+          console.log(p, 'p');
+        }
+
+        // Initialize Swiper
+        onMounted(() => {
+          // pElementRef.value.textContent = 'mounted!'
+          var swiper = new Swiper(".mySwiper", {
+            autoplay: true,
+            keyboard: true,
+            pagination: {
+              el: ".swiper-pagination",
+            },
+          });
+        })
+
+        return {
+          message,
+          list,
+          list1,
+          handle
+        }
+      },
+      components: {
+        ListComponent
+      }
+    }).mount('#app')
+  </script>
+
+  <script>
+
+  </script>
+</body>
+
+</html>
