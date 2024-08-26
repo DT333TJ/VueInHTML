@@ -4,91 +4,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>移动端网页模板</title>
-  <link rel="stylesheet" href="./lib/style.css">
+  <title>服务好专区</title>
   <link rel="stylesheet" href="./lib/swiper-bundle.min.css">
+  <link rel="stylesheet" href="./lib/style.css">
 </head>
 
 <body id="app">
-  <header>
-    <h1>移动网页标题</h1>
-    <div class="swiper mySwiper">
-      <!-- Swiper -->
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">Slide 1</div>
-        <div class="swiper-slide">Slide 2</div>
-        <div class="swiper-slide">Slide 3</div>
-        <div class="swiper-slide">Slide 4</div>
-        <div class="swiper-slide">Slide 5</div>
-        <div class="swiper-slide">Slide 6</div>
-        <div class="swiper-slide">Slide 7</div>
-        <div class="swiper-slide">Slide 8</div>
-        <div class="swiper-slide">Slide 9</div>
-      </div>
-      <div class="swiper-pagination"></div>
-    </div>
+  <canvas id="myCanvas" class="fixed left-0"></canvas>
+  
+  <header id="banner" style="height: 50px;" @click="openPage">
+    测试点击
   </header>
+  <List-Component id="dataSection" :text="'数据'">
+    <div>测试slot</div>
+  </List-Component>
+  
+  <!-- Swiper -->
+    <div class="swiper mySwiper" style="overflow-x: hidden;">
+    <div class="swiper-wrapper">
+      <div v-for="swiper in swiperList" :key="swiper.code" class="swiper-slide">{{ swiper.label }}</div>
+      </div>
+      <!-- <div class="swiper-pagination"></div> -->
+      </div>
+
   <main class="container">
     这是一个使用 VW 适配的容器。{{ message }}
-    <section class="flex">
-      <ul>
-        <li v-for="item in list" @click="handle(item)">
-          {{ item }}
-        </li>
-      </ul>
-    </section>
+    <List-Component :style="{'margin-bottom': index !== content.length-1 ? '2vw' : 0}" v-for="(con, index) in content"
+      :list="con.data" :text="con.title"></List-Component>
 
-    <List-Component :list="list" />
-
-    <section v-if="list1.length" class="flex">
-      <ul>
-        <li class="flex" v-for="item in list1">
-          {{ item }}
-        </li>
-      </ul>
-    </section>
   </main>
-  <footer>
-    <p>版权信息 &copy; 2024</p>
-  </footer>
+  <Footer-Component :text="'版权信息 &copy; 2024'"></Footer-Component>
 
 
   <!-- Swiper JS -->
   <script src="./lib/swiper-bundle.min.js"></script>
+  
   <script type="module">
     import { createApp, ref, onMounted } from './lib/vue.global.prod.js'
-    import ListComponent from './cmponent/list.js'
+                                      import ListComponent from "./component/listComponent.js"
+                                      import FooterComponent from "./component/footerComponent.js"
+                                      import fetchData from './lib/fetch.js'
+                                      import initLoadFunc from './lib/canvas.js'
 
     createApp({
       setup() {
         const message = ref('Hello vue!')
-        const list = ref([1, 2, 3])
-        const list1 = ref([])
-        const handle = (p) => {
-          console.log(p, 'p');
+        const content = ref([])
+        const swiperList = ref([])
+
+        const setDataFunc = () => {
+          var swiper = new Swiper(".mySwiper", {
+            // autoplay: { delay: 3000 },
+            slidesPerView: 1.5,
+            // loop: true,
+            // pagination: {
+            //   el: ".swiper-pagination",
+            // },
+          });
+
+          content.value = [{ title: '1', data: [4, 5, 6] }, { title: '2', data: [7, 8, 9] }, { title: '3', data: [10, 11, 12] }]
+          swiperList.value = new Array(3).fill(1).map((a, i) => ({ label: `Slide ${1 + i} Content`, code: `${1 + i}` }))
+          document.getElementById('myCanvas').style.width = 0
         }
 
-        // Initialize Swiper
+        // Initialize Swiper AND Get Data
         onMounted(() => {
-          // pElementRef.value.textContent = 'mounted!'
-          var swiper = new Swiper(".mySwiper", {
-            autoplay: true,
-            keyboard: true,
-            pagination: {
-              el: ".swiper-pagination",
-            },
+          initLoadFunc()
+          setDataFunc()
+          fetchData("http://10.154.31.142/tkfbm/login/loginmaintainer", { params: "eyJ1c2VyTmFtZSI6ImR1YW54eiIsInBhc3N3b3JkIjoiUGFzczEyIyQifQ==" }).then((data) => {
+            document.getElementById('myCanvas').style.width = 0
+            console.log(data)
+
           });
         })
 
+        const openPage = () => {
+          window.open('./list.html', '_self');
+        }
+
         return {
           message,
-          list,
-          list1,
-          handle
+          content,
+          swiperList,
+          openPage
         }
       },
       components: {
-        ListComponent
+        ListComponent,
+        FooterComponent
       }
     }).mount('#app')
   </script>

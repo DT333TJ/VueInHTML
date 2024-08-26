@@ -1,9 +1,20 @@
-/* 设置根元素字体大小为视口宽度的 62.5%，这样 1rem 就等于视口宽度的 1/16 */
+:root {
+  --swiper-pagination-bullet-size: 6px;
+  --swiper-theme-color: #FF7D0D;
+  --font-size: 4vw
+}
 * {
   margin: 0;
   padding: 0;
 }
 
+body {
+  overflow-x: hidden;
+}
+
+header {
+  margin-top: 1vw;
+}
 ul,
 li {
   list-style-type: none;
@@ -12,28 +23,46 @@ li {
 #app {
   padding-left: 2vw;
   padding-right: 2vw;
+  position: relative;
 }
 
+.fixed {
+  position: fixed;
+}
+
+.left-0 {
+  left: 0
+}
+
+.bg-main {
+  background-color: var(--swiper-theme-color);
+}
 
 .container {
-  width: 80vw;
-  height: 60vw;
-  background-color: lightblue;
-  font-size: 4vw;
-  padding: 2vw;
+  font-size: var(--font-size);
 }
 
-
 .mySwiper {
-  width: 100%;
   height: 30vw;
 }
 
-.swiper-slide {
-  text-align: center;
-  font-size: 2vw;
-  background: #fff;
+.mySwiper .swiper-pagination-bullet-active {
+  width: 20px;
+  border-radius: 4px;
+}
+
+.flex {
   display: flex;
-  justify-content: center;
-  align-items: center;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-justify-between {
+  justify-content: space-between;
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服务好专区</title>
+  <link rel="stylesheet" href="./lib/style.css">
+</head>
+
+<body id="app">
+  <canvas id="myCanvas" class="fixed left-0"></canvas>
+
+  这是一个使用 VW 适配的容器。{{ message }}
+  <main class="container">
+    <article v-for="n in 20" class="post">{{ n }}</article>
+  </main>
+
+
+
+  <!-- Scroll JS -->
+  <script src="./lib//scroll.js"></script>
+  <script type="module">
+    import { createApp, ref, onMounted } from './lib/vue.global.prod.js'
+    import ListComponent from "./component/listComponent.js"
+    import fetchData from './lib/fetch.js'
+    import initLoadFunc from './lib/canvas.js'
+
+    createApp({
+      setup() {
+        const message = ref('Hello vue!')
+        const content = ref([])
+        const swiperList = ref([])
+
+        const setDataFunc = () => {
+          new InfiniteScroll('.container', {})
+
+          content.value = [{ title: '1', data: [4, 5, 6] }, { title: '2', data: [7, 8, 9] }, { title: '3', data: [10, 11, 12] }]
+        }
+
+        // Initialize Swiper AND Get Data
+        onMounted(() => {
+          initLoadFunc()
+          setDataFunc()
+          fetchData("http://10.154.31.142/tkfbm/login/loginmaintainer", { params: "eyJ1c2VyTmFtZSI6ImR1YW54eiIsInBhc3N3b3JkIjoiUGFzczEyIyQifQ==" }).then((data) => {
+            console.log(data)
+
+          });
+        })
+
+        return {
+          message,
+          content,
+          swiperList
+        }
+      },
+      components: {
+        ListComponent,
+      }
+    }).mount('#app')
+  </script>
+
+  <script>
+
+  </script>
+</body>
+
+</html>
