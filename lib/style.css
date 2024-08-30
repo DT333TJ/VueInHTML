@@ -3,13 +3,20 @@
   --swiper-theme-color: #FF7D0D;
   --font-size: 4vw
 }
-* {
-  margin: 0;
-  padding: 0;
+.hideBar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: white
 }
 
 body {
-  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+* {
+  margin: 0;
+  padding: 0;
 }
 
 header {
@@ -21,9 +28,7 @@ li {
 }
 
 #app {
-  padding-left: 2vw;
-  padding-right: 2vw;
-  position: relative;
+
 }
 
 .fixed {
@@ -65,4 +70,19 @@ li {
 
 .flex-justify-between {
   justify-content: space-between;
+}
+.sticky-column {
+  position: sticky;
+  background-color: #f9f9f9;
+  right: 0;
+  transform: translateZ(0);
+}
+
+table,
+tbody,
+th,
+td {
+  padding: 0;
+  margin: 0;
+  border-collapse: collapse;
 }

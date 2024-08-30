@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scrollable Table on Mobile</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    table,
+    tr,
+    td,
+    th,
+    thead,
+    tbody {
+      margin: 0;
+      padding: 0;
+      border-collapse: collapse;
+      /* border: 1px solid #ccc; */
+    }
+
+    table {
+      table-layout: fixed;
+      /* border: 1px solid #ccc; */
+    }
+
+    th,
+    td {
+      padding: 8px;
+      white-space: nowrap;
+      background-color: white;
+      border: 1px solid #ccc;
+      /* border-bottom: 1px solid #ccc; */
+    }
+
+    .sticky {
+      position: sticky;
+      right: 0;
+      z-index: 9;
+      background-color: antiquewhite;
+    }
+
+    .text-wrap {
+      /* white-space: wrap; */
+      /* word-break: break-all; */
+    }
+
+    .text-ellipsis {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      /* white-space: nowrap; */
+    }
+
+    td,
+    th {
+      width: 120px;
+      /* display: flex;
+      align-items: center; */
+    }
+
+    tr {
+      display: flex;
+      /* align-items: center; */
+    }
+
+    td.code1,
+    th.code1 {
+      width: 200px;
+    }
+  </style>
+</head>
+
+<body id="app">
+  <div style="overflow: auto; margin: 10px 20px; border-right: 1px solid #ccc">
+    <table>
+      <colgroup>
+        <col v-for="(column, index) in columnList" class="col" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th v-for="(column, index) in columnList"
+            :class="`text-ellipsis ${index === columnList.length-1 ? 'sticky' : ''} ${column.code}`">
+            {{ column.label }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(data) in dataList">
+          <td v-for="(column, index) in columnList"
+            :class="`text-ellipsis ${index === columnList.length-1 ? 'sticky' : ''} ${column.code}`">
+            <span>{{ data[column.code] }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script type="module">
+    import {
+      createApp,
+      ref,
+      onMounted,
+      nextTick,
+    } from "./lib/vue.global.prod.js";
+    import ListComponent from "./component/listComponent.js";
+    import FooterComponent from "./component/footerComponent.js";
+    import fetchData from "./lib/fetch.js";
+    import initLoadFunc from "./lib/canvas.js";
+
+    createApp({
+      setup() {
+        const message = ref("Hello vue!");
+        const content = ref([]);
+        const columnList = ref([]);
+        const dataList = ref([]);
+        const index = new Array(8).fill(1).map((a, i) => `code${1 + i}`);
+        columnList.value = new Array(8)
+          .fill(1)
+          .map((a, i) => ({
+            label: `Slide ${1 + i} Content`,
+            code: `code${1 + i}`,
+            width: "20vw",
+          }));
+        dataList.value = new Array(40).fill(1).map((a, i) => {
+          let temp = {};
+          for (const element of index) {
+            temp[element] = `label-${i}-Content`;
+          }
+          return temp;
+        });
+
+        const openPage = () => {
+          window.open("./list.html", "_self");
+        };
+
+        return {
+          message,
+          columnList,
+          dataList,
+          openPage,
+        };
+      },
+      components: {
+        ListComponent,
+        FooterComponent,
+      },
+    }).mount("#app");
+  </script>
+</body>
+
+</html>

@@ -7,11 +7,17 @@
   <title>服务好专区</title>
   <link rel="stylesheet" href="./lib/swiper-bundle.min.css">
   <link rel="stylesheet" href="./lib/style.css">
+  <style>
+    ::-webkit-scrollbar {
+      width: 0px;
+    }
+  </style>
 </head>
 
 <body id="app">
   <canvas id="myCanvas" class="fixed left-0"></canvas>
-  
+
+  <div class="hideBar"></div>
   <header id="banner" style="height: 50px;" @click="openPage">
     测试点击
   </header>
@@ -20,12 +26,14 @@
   </List-Component>
   
   <!-- Swiper -->
-    <div class="swiper mySwiper" style="overflow-x: hidden;">
-    <div class="swiper-wrapper">
+    <div class="swiper mySwiper">
+      <div v-if="swiperList.length" class="swiper-wrapper">
       <div v-for="swiper in swiperList" :key="swiper.code" class="swiper-slide">{{ swiper.label }}</div>
       </div>
-      <!-- <div class="swiper-pagination"></div> -->
+      <div class="swiper-pagination"></div>
       </div>
+
+      <div style="height: 600px"></div>
 
   <main class="container">
     这是一个使用 VW 适配的容器。{{ message }}
@@ -40,7 +48,7 @@
   <script src="./lib/swiper-bundle.min.js"></script>
   
   <script type="module">
-    import { createApp, ref, onMounted } from './lib/vue.global.prod.js'
+                  import { createApp, ref, onMounted, nextTick } from './lib/vue.global.prod.js'
                                       import ListComponent from "./component/listComponent.js"
                                       import FooterComponent from "./component/footerComponent.js"
                                       import fetchData from './lib/fetch.js'
@@ -53,23 +61,27 @@
         const swiperList = ref([])
 
         const setDataFunc = () => {
-          var swiper = new Swiper(".mySwiper", {
-            // autoplay: { delay: 3000 },
-            slidesPerView: 1.5,
-            // loop: true,
-            // pagination: {
-            //   el: ".swiper-pagination",
-            // },
-          });
+
 
           content.value = [{ title: '1', data: [4, 5, 6] }, { title: '2', data: [7, 8, 9] }, { title: '3', data: [10, 11, 12] }]
           swiperList.value = new Array(3).fill(1).map((a, i) => ({ label: `Slide ${1 + i} Content`, code: `${1 + i}` }))
           document.getElementById('myCanvas').style.width = 0
+
+          nextTick(() => {
+            var swiper = new Swiper(".mySwiper", {
+              // autoplay: { delay: 3000 },
+              slidesPerView: 1.5,
+            // loop: true,
+              pagination: {
+                el: ".swiper-pagination",
+              },
+            });
+          })
         }
 
         // Initialize Swiper AND Get Data
         onMounted(() => {
-          initLoadFunc()
+          // initLoadFunc()
           setDataFunc()
           fetchData("http://10.154.31.142/tkfbm/login/loginmaintainer", { params: "eyJ1c2VyTmFtZSI6ImR1YW54eiIsInBhc3N3b3JkIjoiUGFzczEyIyQifQ==" }).then((data) => {
             document.getElementById('myCanvas').style.width = 0

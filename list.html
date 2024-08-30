@@ -8,15 +8,28 @@
   <link rel="stylesheet" href="./lib/style.css">
 </head>
 
-<body id="app">
-  <canvas id="myCanvas" class="fixed left-0"></canvas>
+<body id="app" style="background-color: red;">
+  <!-- <canvas id="myCanvas" style="position: absolute;top: 0;width: 100vw;height: 100vh;" class="left-0"></canvas> -->
 
-  这是一个使用 VW 适配的容器。{{ message }}
-  <main class="container">
-    <article v-for="n in 20" class="post">{{ n }}</article>
-  </main>
-
-
+  <div style="height: 20vw;">
+    这是一个使用 VW 适配的容器。{{ message }}
+  </div>
+  <div style="overflow: scroll;margin-left: 20px;margin-right: 20px;">
+    <table>
+      <tr class="flex" style="position: relative;">
+        <th v-for="(swiper, index) in swiperList" :key="swiper.dataIndex + index"
+          :class="`${index === swiperList.length-1 ? 'sticky-column': ''}`" style="width: 120px;">
+          {{
+          swiper.label}}</th>
+      </tr>
+      <tr v-for="n in 20" class="flex" style="height: 50px;position: relative;">
+        <td v-for="(swiper, index) in swiperList" :class="`${index === swiperList.length-1 ? 'sticky-column': ''}`"
+          style="width: 120px;">
+          {{swiper.label}}
+        </td>
+      </tr>
+    </table>
+  </div>
 
   <!-- Scroll JS -->
   <script src="./lib//scroll.js"></script>
@@ -30,7 +43,7 @@
       setup() {
         const message = ref('Hello vue!')
         const content = ref([])
-        const swiperList = ref([])
+        const swiperList = ref([{ label: '责任人/公司', dataIndex: 'first', width: '10vw' }, { label: '责任人/公司', dataIndex: 'first1', width: '15vw' }, { label: '责任人/公司', dataIndex: 'first2', width: '10vw' }, { label: '责任人/公司', dataIndex: 'first', width: '10vw' }, { label: '责任人/公司', dataIndex: 'first', width: '10vw' }, { label: '责任人/公司', dataIndex: 'first', width: '10vw' }, { label: '责任人/公司', dataIndex: 'first', width: '10vw' }, { label: '责任人/公司', dataIndex: 'first', width: '10vw' }, { label: '责任人/公司', dataIndex: 'first', width: '10vw' }, { label: '责任人/公司', dataIndex: 'first', width: '10vw' },])
 
         const setDataFunc = () => {
           new InfiniteScroll('.container', {})
@@ -40,7 +53,7 @@
 
         // Initialize Swiper AND Get Data
         onMounted(() => {
-          initLoadFunc()
+          // initLoadFunc()
           setDataFunc()
           fetchData("http://10.154.31.142/tkfbm/login/loginmaintainer", { params: "eyJ1c2VyTmFtZSI6ImR1YW54eiIsInBhc3N3b3JkIjoiUGFzczEyIyQifQ==" }).then((data) => {
             console.log(data)
