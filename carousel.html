@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <style>
+    .carousel {
+      width: 300px;
+      height: 300px;
+      overflow: hidden;
+    }
+
+    .animation {
+      animation: carouselAnimation 16s linear infinite;
+    }
+
+    .list {
+      display: flex;
+    }
+
+    .list {
+      width: 1200px
+    }
+
+    .list li {
+      flex-basis: 300px;
+      width: 300px;
+      height: 300px;
+      object-fit: fill;
+      background-color: antiquewhite;
+      list-style: none;
+    }
+
+    @keyframes carouselAnimation {
+      0% {
+        transform: translateX(0);
+      }
+
+      33% {
+        transform: translateX(-300px);
+      }
+
+      66% {
+        transform: translateX(-600px);
+      }
+
+      100% {
+        transform: translateX(-900px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="carousel">
+    <div class="list">
+      <li class="item">1</li>
+      <li class="item">2</li>
+      <li class="item">3</li>
+      <li class="item">1</li>
+    </div>
+  </div>
+
+  <script>
+    let currentIndex = 0
+    function nextSlide() {
+      currentIndex++;
+      if (currentIndex === slides.length) {
+        carousel.style.transition = 'none';
+        carousel.style.transform = `translateX(0)`;
+        currentIndex = 1;
+        setTimeout(() => {
+          carousel.style.transition = 'transform 0.5s ease-in-out';
+        }, 0);
+      } else {
+        carousel.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+      }
+    }
+
+    setInterval(nextSlide, 4000);
+  </script>
+</body>
+
+</html>

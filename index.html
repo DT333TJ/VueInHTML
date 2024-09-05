@@ -24,7 +24,13 @@
   <List-Component id="dataSection" :text="'数据'">
     <div>测试slot</div>
   </List-Component>
-  
+
+  <div class="swiper mySwiper2">
+    <div v-if="swiperList.length" class="swiper-wrapper">
+      <div v-for="swiper in swiperList" :key="swiper.code" class="swiper-slide">{{ swiper.label }}</div>
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
   <!-- Swiper -->
     <div class="swiper mySwiper">
       <div v-if="swiperList.length" class="swiper-wrapper">
@@ -75,6 +81,13 @@
               pagination: {
                 el: ".swiper-pagination",
               },
+            });
+
+            var swiper2 = new Swiper(".mySwiper2", {
+              autoplay: { delay: 3000 },
+              slidesPerView: 1,
+              loop: true,
+
             });
           })
         }

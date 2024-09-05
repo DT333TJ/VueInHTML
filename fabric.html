@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fabric.js Grid Background</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    #content {
+      width: 800px;
+      height: 600px;
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="position: relative; margin: 20px;">
+    <div id="content">
+      <p style="background-color: aqua;">测试</p>
+    </div>
+    <canvas id="container" width="800" height="600"></canvas>
+  </div>
+
+  <script>
+    (function () {
+      // 获取容器元素
+      const content = document.getElementById('content');
+
+      // 创建 Fabric.js 的画布并设置与容器相同大小
+      const canvas = new fabric.Canvas('container');
+
+      // 绘制网格
+      const gridSize = 800 / 10;
+      for (let x = 0; x <= canvas.width; x += gridSize) {
+        const line = new fabric.Line([x, 0, x, canvas.height], {
+          stroke: 'lightgray',
+          selectable: false
+        });
+        canvas.add(line);
+        const text = new fabric.Text(`${x / 8}vw`, {
+          left: x === canvas.width ? x - 25 : x + 2,
+          top: 0,
+          fontSize: 10,
+          fill: 'black'
+        });
+        canvas.add(text);
+      }
+      for (let y = 0; y <= canvas.height; y += 50) {
+        const line = new fabric.Line([0, y, canvas.width, y], {
+          stroke: 'lightgray',
+          selectable: false
+        });
+        canvas.add(line);
+        if (y !== 0) {
+          const text = new fabric.Text(`${y}px`, {
+            left: 2,
+            top: y === canvas.height ? y - 10 : y - 5,
+            fontSize: 10,
+            fill: 'black'
+          });
+          canvas.add(text);
+        }
+      }
+
+      const canvasElement = canvas.getElement().parentElement;
+      canvasElement.style.position = 'absolute';
+      canvasElement.style.top = '0';
+      canvasElement.style.zIndex = 9;
+
+      // canvas.on('mouse:move', function (opt) {
+      //   const pointer = canvas.getPointer(opt.e);
+      //   // console.log('鼠标位置：', pointer.x, pointer.y);
+      // });
+
+      // 将绘制的线条添加到画布上
+      // canvas.renderAll();
+    }())
+  </script>
+</body>
+
+</html>

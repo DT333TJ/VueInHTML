@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .carousel-container {
+      width: 400px;
+      height: 300px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .carousel {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      width: 1200px;
+      will-change: transform;
+    }
+
+    .carousel li {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      background-color: antiquewhite;
+      list-style-type: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="carousel-container">
+    <div class="carousel">
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <!-- <li>1</li> -->
+      <!-- <img src="image1.jpg" alt="Image 1">
+      <img src="image2.jpg" alt="Image 2">
+      <img src="image3.jpg" alt="Image 3"> -->
+    </div>
+  </div>
+  <script type="module">
+    import { createApp, ref, onMounted, nextTick } from './lib/vue.global.prod.js'
+
+    createApp({
+      setup() {
+        const message = ref('Hello vue!')
+        const content = ref([])
+        const swiperList = ref([])
+
+        const setDataFunc = () => {
+
+
+          swiperList.value = new Array(3).fill(1).map((a, i) => ({ label: `Slide ${1 + i} Content`, code: `${1 + i}` }))
+          document.getElementById('myCanvas').style.width = 0
+
+          nextTick(() => {
+            var swiper = new Swiper(".mySwiper", {
+              // autoplay: { delay: 3000 },
+              slidesPerView: 1.5,
+              // loop: true,
+              pagination: {
+                el: ".swiper-pagination",
+              },
+            });
+          })
+        }
+
+        // Initialize Swiper AND Get Data
+        onMounted(() => {
+          // initLoadFunc()
+          setDataFunc()
+          fetchData("http://10.154.31.142/tkfbm/login/loginmaintainer", { params: "eyJ1c2VyTmFtZSI6ImR1YW54eiIsInBhc3N3b3JkIjoiUGFzczEyIyQifQ==" }).then((data) => {
+            document.getElementById('myCanvas').style.width = 0
+            console.log(data)
+
+          });
+        })
+
+        const openPage = () => {
+          window.open('./list.html', '_self');
+        }
+
+        return {
+          message,
+          content,
+          swiperList,
+          openPage
+        }
+      },
+      components: {
+        ListComponent,
+        FooterComponent
+      }
+    }).mount('#app')
+  </script>
+
+  <script>
+    const carousel = document.querySelector('.carousel');
+    const images = carousel.querySelectorAll('li');
+    let currentIndex = 0;
+    const imageWidth = images[0].clientWidth;
+
+    function startCarousel() {
+      setInterval(() => {
+        currentIndex++;
+        if (currentIndex >= images.length) {
+          currentIndex = 0;
+          carousel.appendChild(images[0])
+          // carousel.style.transition = 'none';
+          // carousel.style.transform = `translateX(0)`;
+          // setTimeout(() => {
+          //   carousel.style.transition = 'transform 0.5s ease-in-out';
+          // }, 0);
+        } else {
+          carousel.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+          carousel.style.transition = 'transform 0.5s ease-in-out';
+        }
+      }, 4000);
+    }
+
+    startCarousel();
+  </script>
+</body>
+
+</html>

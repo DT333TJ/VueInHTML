@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <style>
+    canvas {
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="c" width="800" height="600"></canvas>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
+  <script>
+    const canvas = new fabric.Canvas('c');
+    const gridSize = 20;
+    const ctx = canvas.getContext('2d');
+    ctx.strokeStyle = 'red';
+    ctx.font = '10px Arial';
+    ctx.fillStyle = 'black';
+    for (let x = 0; x <= canvas.width; x += gridSize) {
+      const line = new fabric.Line([x, 0, x, canvas.height], {
+        stroke: 'lightgray',
+        // selectable: false
+      });
+      canvas.add(line);
+      if (x % (gridSize * 5) === 0) {
+        const text = new fabric.Text(`${x}`, {
+          left: x + 2,
+          top: 0,
+          fontSize: 10,
+          fill: 'black'
+        });
+        canvas.add(text);
+      }
+    }
+    for (let y = 0; y <= canvas.height; y += gridSize) {
+      const line = new fabric.Line([0, y, canvas.width, y], {
+        stroke: 'lightgray',
+        // selectable: false
+      });
+      canvas.add(line);
+    }
+  </script>
+</body>
+
+</html>
