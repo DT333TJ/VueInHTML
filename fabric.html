@@ -74,10 +74,76 @@
       canvasElement.style.top = '0';
       canvasElement.style.zIndex = 9;
 
+      const rect = new fabric.Rect({
+        left: 50,
+        top: 50,
+        width: 100,
+        height: 100,
+        fill: 'gray',
+        opacity: 0.1,
+        lockRotate: true
+      });
+      canvas.add(rect);
+
+      // canvas.on('object:scaling', function (e) {
+      //   const obj = e.target;
+      //   const canvasWidth = canvas.width;
+      //   const canvasHeight = canvas.height;
+      //   const newLeft = obj.left;
+      //   const newTop = obj.top;
+      //   const newWidth = obj.width;
+      //   const newHeight = obj.height;
+      //   const newRight = newLeft + newWidth;
+      //   const newBottom = newTop + newHeight;
+
+      //   console.log('newLeft', newLeft)
+      //   console.log('newTop', newTop)
+      //   console.log('newRight', newRight)
+      //   console.log('newBottom', newBottom)
+
+      //   if (newLeft < 0 || newTop < 0 || newRight > canvasWidth || newBottom > canvasHeight) {
+      //     e.stop(); // 停止缩放事件
+      //   }
+      // });
+
+      // canvas.on('object:scaling', function (e) {
+      //   // 获取缩放后的尺寸
+      //   const newWidth = e.target.width * e.target.scaleX;
+      //   const newHeight = e.target.height * e.target.scaleY;
+
+      //   // 假设当宽或高超过某个阈值时阻止缩放
+      //   if (newWidth > 200 || newHeight > 200) {
+      //     e.stop();
+      //   }
+      // });
+      
+
       // canvas.on('mouse:move', function (opt) {
       //   const pointer = canvas.getPointer(opt.e);
       //   // console.log('鼠标位置：', pointer.x, pointer.y);
       // });
+
+      canvas.on('object:move', function (opt) {
+        const pointer = canvas.getPointer(opt.e);
+        const activeObj = opt.target
+        const { x, y } = pointer
+        if (x > 800 || y > 600) {
+          console.log('opt', opt)
+          // 如果正在移动矩形，则阻止绘制新矩形
+
+          const { scaleX = 1, scaleY = 1, left, top, width, height } = activeObj
+          const newWidth = width * scaleX;
+          const newHeight = height * scaleY;
+          // alert('请不要移动出画布!')
+          if (newWidth + left > canvas.width) {
+            console.log('canvas.width-left', canvas.width - left, activeObj)
+            // 执行设置操作
+            // rect.set('width', canvas.width - left)
+            activeObj.set({ 'width': 100 })
+            // canvas.renderAll();
+          }
+        }
+      })
 
       // 将绘制的线条添加到画布上
       // canvas.renderAll();

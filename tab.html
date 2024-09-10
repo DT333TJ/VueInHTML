@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF - 8">
+  <title>Vue Resize Directive Example</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    #resizableDiv {
+      width: 150px;
+      height: 150px;
+      border: 1px solid #000;
+      padding: 0.5em;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .tab-box {
+      display: flex;
+      align-items: center;
+      background: #e44f26;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .tab-box .tab-item {
+      position: relative;
+      flex: 1;
+      padding: 20px;
+      /* height: 50px;
+      line-height: 50px; */
+      text-align: center;
+      color: #fff;
+      background: #e44f26;
+    }
+
+    .tab-box .active {
+      background: #fff;
+      color: #333;
+      z-index: 1;
+    }
+
+    .tab-box .active::before {
+      content: "";
+      position: absolute;
+      left: -21px;
+      bottom: 0;
+      width: 21px;
+      height: 50px;
+      background: #e44f26;
+      border-radius: 0 0 10px 0;
+    }
+
+    .tab-box .active::after {
+      content: "";
+      position: absolute;
+      right: -21px;
+      bottom: 0;
+      width: 21px;
+      height: 50px;
+      background: #e44f26;
+      border-radius: 0 0 0 10px;
+    }
+
+    .tab-box .active {
+      border-radius: 10px 10px 0 0;
+    }
+
+    .tab-box .active {
+      box-shadow: 10px 10px 0 0 white, -10px 10px 0 0 white;
+    }
+
+    /* .tab-box .active::before {
+      background: #e44f26;
+    }
+
+    .tab-box .active::after {
+      background: #e44f26;
+    } */
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div id="resizableDiv" v - resize:width.height="onResize" class="ui - widget - content">
+      <p>Resizable div</p>
+    </div>
+
+    <div class="tab-box">
+      <div class="tab-item">TAB 1</div>
+      <div class="tab-item active">TAB 2</div>
+      <div class="tab-item">TAB 3</div>
+      <div class="tab-item">TAB 4</div>
+    </div>
+
+  </div>
+  <!-- <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          width: 150,
+          height: 150
+        };
+      },
+      methods: {
+        onResize(width, height) {
+          this.width = width;
+          this.height = height;
+        }
+      }
+    });
+    app.mount('#app');
+  </script> -->
+</body>
+
+</html>

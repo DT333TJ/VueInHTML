@@ -28,10 +28,55 @@
       background-color: antiquewhite;
       list-style-type: none;
     }
+      .tabs {
+     display: flex;
+   }
+
+  .tab {
+     padding: 10px 20px;
+     border: 1px solid #ddd;
+     position: relative;
+     margin-right: 5px;
+     cursor: pointer;
+   }
+
+  .tab::before,
+  .tab::after {
+     content: "";
+     position: absolute;
+     border: 1px solid #ddd;
+   }
+
+  .tab::before {
+     top: -1px;
+     left: -1px;
+     width: 10px;
+     height: 10px;
+     border-top-left-radius: 0;
+     border-bottom-left-radius: 0;
+   }
+
+  .tab::after {
+     top: -1px;
+     right: -1px;
+     width: 10px;
+     height: 10px;
+     border-top-right-radius: 0;
+     border-bottom-right-radius: 0;
+   }
+
+  .active {
+     background-color: #f0f0f0;
+   }
   </style>
 </head>
 
 <body>
+<div class="tabs">
+  <div class="tab active">Tab 1</div>
+  <div class="tab">Tab 2</div>
+  <div class="tab">Tab 3</div>
+</div>
   <div class="carousel-container">
     <div class="carousel">
       <li>1</li>
